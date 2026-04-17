@@ -6,9 +6,6 @@ export class Category extends BaseEntity {
   @Column()
   name!: string;
 
-  @Column({ nullable: true })
-  description?: string;
-
   @OneToMany(() => Transactions, (transactions) => transactions.category)
   transactions!: Transactions[];
 }

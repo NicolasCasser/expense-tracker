@@ -9,7 +9,7 @@ export class Transactions extends BaseEntity {
   @Column()
   date!: Date;
 
-@OneToMany(() => Category, (category) => category.transactions)
+  @OneToMany(() => Category, (category) => category.transactions)
   category!: Category[];
 }
 
