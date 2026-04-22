@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { dataSourceOptions } from './database/data-source';
 import { TransactionsModule } from './modules/transactions/transactions.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
       playground: false,
     }),
     TransactionsModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}
