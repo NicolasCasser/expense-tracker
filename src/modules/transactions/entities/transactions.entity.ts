@@ -1,17 +1,16 @@
-import { BaseEntity } from 'src/modules/bases/base.entity';
-import { Category } from 'src/modules/category/entities/category.entity';
-import { Column, OneToMany } from 'typeorm';
+import { BaseEntity } from '../../bases/base.entity';
+import { Category } from '../../category/entities/category.entity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-export class Transactions extends BaseEntity {
+@Entity()
+export class Transaction extends BaseEntity {
   @Column()
   amount!: number;
 
   @Column()
   date!: Date;
 
-  @OneToMany(() => Category, (category) => category.transactions)
-  category!: Category[];
+  @ManyToOne(() => Category, (category) => category.transactions)
+  @JoinColumn({ name: 'category_id' })
+  category!: Category;
 }
-
-  
-
