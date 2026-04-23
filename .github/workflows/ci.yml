@@ -1,0 +1,29 @@
+name: Testes Unitários (CI)
+
+# Quando deve rodar
+on:
+  pull_request:
+    branches:
+      - main 
+
+# O que o pipeline deve fazer
+jobs:
+  test:
+    name: Rodar Testes no Node.js
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar o repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-versions: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar testes Unitários
+        run: npm run test
