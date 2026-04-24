@@ -2,6 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities/transactions.entity';
 import { Repository } from 'typeorm';
 import { CreateTransactionInput } from './dto/create-transaction.input';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 export class TransactionsService {
   constructor(
@@ -10,14 +11,39 @@ export class TransactionsService {
   ) {}
 
   async create(data: CreateTransactionInput): Promise<Transaction> {
-    const { categoryId, ...transactionData } = data;
+  const transactions = this.transactionRepository.create(data); 
 
-    const newTransaction = this.transactionRepository.create({
-      ...transactionData,
-      category: { id: categoryId },
-      date: new Date(),
-    });
+  const savedTransaction = await this.transactionRepository.save(transactions);
+  return savedTransaction;
+}
 
-    return this.transactionRepository.save(newTransaction);
+async findAll(): Promise<Transaction[]>{ 
+  const transaction = await this.transactionRepository.find(); 
+if (transaction.length === 0) {
+  throw new NotFoundException(' no transaction found');
+}
+ return transaction; 
+}
+
+async findById(id: string): Promise<Transaction> {
+    const transaction = await this.transactionRepository.findOneBy({ id });
+
+    if (!transaction) {
+      throw new NotFoundException({ message: 'transaction not found' });
+    }
+
+    return transaction;
+  }
+
+
+  async delete(id: string): Promise<string> {
+    const result = await this.transactionRepository.softDelete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException('transaction not found');
+    }
+
+    return 'Transaction deleted seccessfully';
   }
 }
+
