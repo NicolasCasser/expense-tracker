@@ -16,6 +16,7 @@ export const dataSourceOptions: DataSourceOptions = {
   migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
   migrationsTableName: 'migrations',
   synchronize: false,
+
 };
 
 const dataSource = new DataSource(dataSourceOptions);
